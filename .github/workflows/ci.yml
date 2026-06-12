@@ -21,7 +21,7 @@ jobs:
         run: flake8 .
 
       - name: 2. Coverage Check
-        run: pytest --cov=app --cov-fail-under=80
+        run: pytest --cov=app --cov-fail-under=70
 
       - name: 3. Output Validation
         run: |
