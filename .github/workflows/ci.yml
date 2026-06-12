@@ -1,0 +1,32 @@
+name: Simple Python CI
+
+on: [push]
+
+jobs:
+  quality-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install Tools
+        run: pip install -r requirements.txt
+
+      - name: 1. Style Check (Lint)
+        run: flake8 .
+
+      - name: 2. Coverage Check
+        run: pytest --cov=app --cov-fail-under=80
+
+      - name: 3. Output Validation
+        run: |
+          output=$(python app.py)
+          if [ "$output" != "5" ]; then
+            echo "Failed! Expected 5 but got $output"
+            exit 1
+          fi
